@@ -1,113 +1,128 @@
 <!DOCTYPE html>
 <html lang="zh-Hant-TW">
-  <head>
-    <meta charset="UTF-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Document</title>
-    <link
-      href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/css/bootstrap.min.css"
-      rel="stylesheet"
-      integrity="sha384-wEmeIV1mKuiNpC+IOBjI7aAzPcEZeedi5yW5f2yOq55WWLwNGmvvx4Um1vskeMj0"
-      crossorigin="anonymous"
-    />
-    <link
-      rel="stylesheet"
-      href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.3.0/font/bootstrap-icons.css"
-    />
-  </head>
+    <head>
+        <meta charset="UTF-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Document</title>
+        <link
+            href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/css/bootstrap.min.css"
+            rel="stylesheet"
+            integrity="sha384-wEmeIV1mKuiNpC+IOBjI7aAzPcEZeedi5yW5f2yOq55WWLwNGmvvx4Um1vskeMj0"
+            crossorigin="anonymous"
+        />
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.3.0/font/bootstrap-icons.css" />
+    </head>
 
-  <body>
-    <div id="app">
-      <div class="container">
-        <div class="my-3">
-          <button
-            type="button"
-            class="btn btn-outline-primary"
-          >
-            切換大頭貼解析度
-          </button>
-          現在圖片解析度：
-          <span>清晰</span>
-        </div>
-        <div class="row">
-          <div class="col-md-4 mb-3">
-            <div class="card h-100">
-              <div class="position-absolute" style="top: 20px; right: 20px">
-                <button
-                  type="button"
-                  class="btn btn-outline-danger rounded-pill"
-                >
-                  <i class="bi bi-heart fs-5"></i>
-                </button>
-              </div>
-              <img
-                src="https://randomuser.me/api/portraits/men/24.jpg"
-                class="card-img-top"
-              />
-              <div class="card-body">
-                <h5 class="card-title">
-                  Monsieur Jérôme Clement( <span>👨</span> )
-                </h5>
-                <p class="card-text">
-                  Email：<a href="mailto:jerome.clement@example.com"
-                    >jerome.clement@example.com</a
-                  >
-                </p>
-                <p class="card-text">
-                  Phone: <a href="tel:077 857 10 09">077 857 10 09</a>
-                </p>
-                <p class="card-text">
-                  Cell: <a href="tel:075 491 99 85">075 491 99 85</a>
-                </p>
-                <p class="card-text">City: Châtillon (Ju)</p>
-                <p class="card-text">State: Graubünden</p>
-                <p class="card-text">Country: Switzerland</p>
-                <p class="card-text">Postcode: 6560</p>
-                <p>
-                  Address：<a
-                    href="https://www.google.com.tw/maps/search/Châtillon (Ju)Graubünden"
-                    target="_blank"
-                    >Châtillon (Ju) Graubünden Switzerland 6560</a
-                  >
-                </p>
-                <p class="card-text">
-                  description: Bombay, Calcutta, Madras, New Delhi
-                </p>
-                <p class="card-text">
-                  <small class="text-muted"
-                    >dob：1965-03-08T06:47:08.901Z</small
-                  >
-                </p>
-                <p class="card-text">
-                  <small class="text-muted"
-                    >registered：2016-03-08T06:04:55.159Z</small
-                  >
-                </p>
-                <iframe
-                  width="100%"
-                  height="300"
-                  frameborder="0"
-                  scrolling="no"
-                  marginheight="0"
-                  marginwidth="0"
-                  src="https://maps.google.com.tw/maps?f=q&amp;hl=zh-TW&amp;geocode=&amp;q=-50.7880,-14.1043&amp;z=10&amp;output=embed"
-                ></iframe>
-              </div>
+    <body>
+        <div id="app">
+            <div class="container">
+                <div class="my-3">
+                    <button
+                        type="button"
+                        class="btn btn-outline-secondary me-3"
+                        @click="photoStatus = !photoStatus"
+                        v-if="photoStatus"
+                    >
+                        模糊照片
+                    </button>
+                    <button
+                        type="button"
+                        class="btn btn-outline-secondary me-3"
+                        @click="photoStatus = !photoStatus"
+                        v-else="photoStatus"
+                    >
+                        清晰照片
+                    </button>
+                    <button type="button" class="btn btn-outline-secondary" @click="changePeople">刷新對象</button>
+                </div>
+                <div class="row">
+                    <div class="col-md-4 mb-3" v-for="data in allData">
+                        <div class="card h-100">
+                            <div class="position-absolute" style="top: 20px; right: 20px">
+                                <button type="button" class="btn btn-outline-danger rounded-pill" @click="data.favorite = !data.favorite">
+                                    <i class="fas fa-heart" v-if="data.favorite"></i>
+                                    <i class="bi bi-heart fs-5" v-else ></i>
+                                </button>
+                            </div>
+                            <img :src="data.picture.large" class="card-img-top" v-if="photoStatus" />
+                            <img :src="data.picture.thumbnail" class="card-img-top" v-else />
+                            <div class="card-body">
+                                <h5 class="card-title">
+                                    {{ data.name.first }}(
+                                    <span v-if="data.gender === 'male'"><i class="fas fa-mars"></i></span
+                                    ><span v-else="data.gender === 'female'"><i class="fas fa-venus"></i></span> )
+                                </h5>
+                                <p class="card-text">Email：<a :href="data.email">{{ data.email }}</a></p>
+                                <p class="card-text">Phone: <a :href="`tel:${data.phone}`">{{ data.phone }}</a></p>
+                                <p class="card-text">Cell: <a :href="`tel:${data.cell}`">{{ data.cell }}</a></p>
+                                <p class="card-text">City: {{ data.location.city }}</p>
+                                <p class="card-text">State: {{ data.location.state }}</p>
+                                <p class="card-text">Country: {{ data.location.country }}</p>
+                                <p class="card-text">Postcode: {{ data.location.postcode }}</p>
+                                <p>
+                                    Address：<a
+                                        :href="`https://www.google.com.tw/maps/search/${data.location.city} ${data.location.state}`"
+                                        target="_blank"
+                                    >
+                                        {{ data.location.city }} {{ data.location.state }} {{ data.location.country }}
+                                        {{ data.location.postcode }}</a
+                                    >
+                                </p>
+                                <p class="card-text">description: Bombay, Calcutta, Madras, New Delhi</p>
+                                <p class="card-text">
+                                    <small class="text-muted">dob：1965-03-08T06:47:08.901Z</small>
+                                </p>
+                                <p class="card-text">
+                                    <small class="text-muted">registered：2016-03-08T06:04:55.159Z</small>
+                                </p>
+                                <iframe
+                                    width="100%"
+                                    height="300"
+                                    frameborder="0"
+                                    scrolling="no"
+                                    marginheight="0"
+                                    marginwidth="0"
+                                    src="https://maps.google.com.tw/maps?f=q&amp;hl=zh-TW&amp;geocode=&amp;q=-50.7880,-14.1043&amp;z=10&amp;output=embed"
+                                ></iframe>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
-          </div>
         </div>
-      </div>
-    </div>
-    <script
-      src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"
-      integrity="sha384-p34f1UUtsS3wqzfto5wAAmdvj+osOnFyQFpp4Ua3gs/ZVWx6oOypYoCJhGGScy+8"
-      crossorigin="anonymous"
-    ></script>
-    <script src="https://unpkg.com/vue@next"></script>
-    <script src="data.js"></script>
-    <script>
-      console.log(results);
-    </script>
-  </body>
+
+        <script
+            src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-p34f1UUtsS3wqzfto5wAAmdvj+osOnFyQFpp4Ua3gs/ZVWx6oOypYoCJhGGScy+8"
+            crossorigin="anonymous"
+        ></script>
+        <script src="https://unpkg.com/vue@next"></script>
+        <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+        <script src="https://kit.fontawesome.com/de24f413c6.js" crossorigin="anonymous"></script>
+
+        <script>
+            Vue.createApp({
+                data() {
+                    return {
+                        photoStatus : 'clear',
+                        allData: [],
+                        favorite:'',
+                    };
+                },
+                methods: {
+                    changePeople() {
+                        axios.get("https://randomuser.me/api/?results=10")
+                            .then((response) => {this.allData = response.data.results;
+                            });
+                    }
+                },
+                mounted() {       // vue會自動執行
+                    this.changePeople();
+                },
+            }).mount("#app");
+
+            console.log(results);
+        </script>
+    </body>
 </html>
