@@ -37,7 +37,7 @@
                     <button type="button" class="btn btn-outline-secondary" @click="changePeople">刷新對象</button>
                 </div>
                 <div class="row">
-                    <div class="col-md-4 mb-3" v-for="data in allData">
+                    <div class="col-md-4 mb-3 rounded" v-for="data in allData">
                         <div class="card h-100">
                             <div class="position-absolute" style="top: 20px; right: 20px">
                                 <button type="button" class="btn btn-outline-danger rounded-pill" @click="data.favorite = !data.favorite">
@@ -53,38 +53,11 @@
                                     <span v-if="data.gender === 'male'"><i class="fas fa-mars"></i></span
                                     ><span v-else="data.gender === 'female'"><i class="fas fa-venus"></i></span> )
                                 </h5>
-                                <p class="card-text">Email：<a :href="data.email">{{ data.email }}</a></p>
-                                <p class="card-text">Phone: <a :href="`tel:${data.phone}`">{{ data.phone }}</a></p>
-                                <p class="card-text">Cell: <a :href="`tel:${data.cell}`">{{ data.cell }}</a></p>
-                                <p class="card-text">City: {{ data.location.city }}</p>
-                                <p class="card-text">State: {{ data.location.state }}</p>
-                                <p class="card-text">Country: {{ data.location.country }}</p>
-                                <p class="card-text">Postcode: {{ data.location.postcode }}</p>
-                                <p>
-                                    Address：<a
-                                        :href="`https://www.google.com.tw/maps/search/${data.location.city} ${data.location.state}`"
-                                        target="_blank"
-                                    >
-                                        {{ data.location.city }} {{ data.location.state }} {{ data.location.country }}
-                                        {{ data.location.postcode }}</a
-                                    >
-                                </p>
-                                <p class="card-text">description: Bombay, Calcutta, Madras, New Delhi</p>
-                                <p class="card-text">
-                                    <small class="text-muted">dob：1965-03-08T06:47:08.901Z</small>
-                                </p>
-                                <p class="card-text">
-                                    <small class="text-muted">registered：2016-03-08T06:04:55.159Z</small>
-                                </p>
-                                <iframe
-                                    width="100%"
-                                    height="300"
-                                    frameborder="0"
-                                    scrolling="no"
-                                    marginheight="0"
-                                    marginwidth="0"
-                                    src="https://maps.google.com.tw/maps?f=q&amp;hl=zh-TW&amp;geocode=&amp;q=-50.7880,-14.1043&amp;z=10&amp;output=embed"
-                                ></iframe>
+                                <div class="row">
+                                    <p class="card-text col-4 text-center"><a :href="data.email"><i class="fas fa-envelope"></i></a></p>
+                                    <p class="card-text col-4 text-center"><a :href="`tel:${data.phone}`"><i class="fas fa-phone"></i></a></p>
+                                    <p class="card-text col-4 text-center"><a :href="`tel:${data.cell}`"><i class="fas fa-mobile-alt"></i></a></p>
+                                </div>
                             </div>
                         </div>
                     </div>
